@@ -1,6 +1,8 @@
 package com.alok.bookmyshoww.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ public class Venue {
     private String city;
     private String address;
 
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "venue")
     private List<Screen> screens;
 

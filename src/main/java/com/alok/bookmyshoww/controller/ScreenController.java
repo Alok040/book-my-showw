@@ -2,6 +2,7 @@ package com.alok.bookmyshoww.controller;
 
 
 import com.alok.bookmyshoww.exceptions.ScreenNotFoundException;
+import com.alok.bookmyshoww.exceptions.VenueNotFoundException;
 import com.alok.bookmyshoww.model.Screen;
 import com.alok.bookmyshoww.service.ScreenService;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,7 @@ public class ScreenController {
     private final ScreenService screenService;
 
     @PostMapping
-    public ResponseEntity<Screen> create(@RequestBody Screen screen)
-    {
+    public ResponseEntity<Screen> create(@RequestBody Screen screen) throws VenueNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(screenService.create(screen));
     }
 
@@ -28,7 +28,7 @@ public class ScreenController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Screen> update(@PathVariable Long id,@RequestBody Screen screen) throws ScreenNotFoundException {
+    public ResponseEntity<Screen> update(@PathVariable Long id,@RequestBody Screen screen) throws ScreenNotFoundException, VenueNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(screenService.update(id,screen));
     }
 

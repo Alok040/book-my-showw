@@ -1,5 +1,7 @@
 package com.alok.bookmyshoww.controller;
 
+import com.alok.bookmyshoww.exceptions.MovieNotFoundException;
+import com.alok.bookmyshoww.exceptions.ScreenNotFoundException;
 import com.alok.bookmyshoww.exceptions.ShowNotFoundException;
 import com.alok.bookmyshoww.exceptions.ShowSchedulingConflictException;
 import com.alok.bookmyshoww.model.Show;
@@ -17,7 +19,7 @@ public class ShowController {
     private final ShowService showService;
 
     @PostMapping
-    public ResponseEntity<Show> create(@RequestBody Show show) throws ShowSchedulingConflictException {
+    public ResponseEntity<Show> create(@RequestBody Show show) throws ShowSchedulingConflictException, ScreenNotFoundException, MovieNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(showService.create(show));
     }
 
@@ -27,7 +29,7 @@ public class ShowController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Show> update(@PathVariable Long id,@RequestBody Show show) throws ShowNotFoundException, ShowSchedulingConflictException {
+    public ResponseEntity<Show> update(@PathVariable Long id,@RequestBody Show show) throws ShowNotFoundException, ShowSchedulingConflictException, ScreenNotFoundException, MovieNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(showService.update(id,show));
     }
 

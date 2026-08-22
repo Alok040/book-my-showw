@@ -1,6 +1,8 @@
 package com.alok.bookmyshoww.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,7 @@ public class Screen {
     private String screenName;
     private int totalSeats;
 
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "venue_id",referencedColumnName = "id")
     private Venue venue;
