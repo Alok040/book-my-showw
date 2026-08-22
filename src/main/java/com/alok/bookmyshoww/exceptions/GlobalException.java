@@ -25,4 +25,25 @@ public class GlobalException {
     {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(MovieNotFoundException.class)
+    public ResponseEntity<String> handleMovieNotFoundException(MovieNotFoundException ex)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ShowNotFoundException.class)
+    public ResponseEntity<String> handleShowNotFoundException(ShowNotFoundException ex)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    @ExceptionHandler(ShowSchedulingConflictException.class)
+    public ResponseEntity<String> handleShowSchedulingConflictException(ShowSchedulingConflictException ex)
+    {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+    @ExceptionHandler(InvalidShowTimeException.class)
+    public ResponseEntity<String> handleInvalidShowTimeException(InvalidShowTimeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }
