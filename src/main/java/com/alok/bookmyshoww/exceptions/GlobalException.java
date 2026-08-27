@@ -46,4 +46,14 @@ public class GlobalException {
     public ResponseEntity<String> handleInvalidShowTimeException(InvalidShowTimeException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handelUserNotFoundException(UserNotFoundException ex)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    @ExceptionHandler(SeatAlreadyBookedException.class)
+    public ResponseEntity<String> handleSeatAlreadyBookedException(SeatAlreadyBookedException ex)
+    {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }
