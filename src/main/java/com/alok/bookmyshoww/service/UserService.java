@@ -1,5 +1,6 @@
 package com.alok.bookmyshoww.service;
 
+import com.alok.bookmyshoww.enums.Role;
 import com.alok.bookmyshoww.exceptions.UserNotFoundException;
 import com.alok.bookmyshoww.model.User;
 import com.alok.bookmyshoww.repository.UserRepo;
@@ -11,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
     @Transactional
     public User create(User user)
     {
+        user.setRole(Role.USER);
         userRepo.save(user);
         return user;
     }

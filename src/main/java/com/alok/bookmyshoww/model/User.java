@@ -1,5 +1,6 @@
 package com.alok.bookmyshoww.model;
 
+import com.alok.bookmyshoww.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -36,5 +37,9 @@ public class User {
     @NotBlank
     @Size(min = 10,max = 10)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
 }
