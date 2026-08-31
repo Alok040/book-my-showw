@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+  <rect width="400" height="600" fill="#e9e9ef"/>
+  <path d="M140 240h120v120H140z" fill="#c5c5d0"/>
+  <circle cx="200" cy="205" r="48" fill="#c5c5d0"/>
+  <text x="200" y="410" text-anchor="middle" font-family="Arial" font-size="24" fill="#777">NO POSTER</text>
+</svg>
