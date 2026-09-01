@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ScreenRepo extends JpaRepository<Screen,Long> {
+    boolean existsByVenueId(Long venueId);
 }

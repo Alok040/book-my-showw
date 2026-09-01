@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -20,6 +21,21 @@ public class Show {
     private LocalDate showDate;
     private LocalTime startTime;
     private LocalTime endTime;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal reclinerPrice;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal vipPrice;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal couplePrice;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal premiumPrice;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal regularPrice;
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "screen_id",nullable = false)

@@ -40,4 +40,7 @@ public class Movie {
     @ElementCollection
     private List<String> cast;
     private LocalDate releaseDate;
+
+    @Column(nullable = false,unique = true)
+    private String posterUrl;
 }

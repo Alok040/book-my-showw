@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Repository
 public interface ShowRepo extends JpaRepository<Show,Long> {
@@ -40,4 +41,7 @@ public interface ShowRepo extends JpaRepository<Show,Long> {
             @Param("showDate") LocalDate showDate,
             @Param("startTime") LocalTime startTime,
             @Param("endTime") LocalTime endTime);
+    boolean existsByMovieId(Long movieId);
+    List<Show> findByScreenVenueCityIgnoreCase(String city);
+    boolean existsByScreenId(Long screenId);
 }

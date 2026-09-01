@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 @Service
 @RequiredArgsConstructor
 public class BookingService {
@@ -48,7 +50,17 @@ public class BookingService {
         if (!bookedSeats.isEmpty()) {
             throw new SeatAlreadyBookedException("One or more selected seats are already booked");
         }
+        BigDecimal ticketTotal = seats.stream()
+                .map(seat -> priceFor(show, seat.getSeatType()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal convenienceFee = ticketTotal.multiply(new BigDecimal("0.05"))
+                .setScale(0, RoundingMode.HALF_UP);
+        BigDecimal platformFee = seats.isEmpty() ? BigDecimal.ZERO : new BigDecimal("10");
+        BigDecimal total = ticketTotal.add(convenienceFee).add(platformFee);
+
         Booking booking = new Booking();
+        booking.setBookingDate(java.time.LocalDate.now());
+        booking.setTotalAmount(total);
         booking.setUser(user);
         booking.setShow(show);
         booking.setBookingStatus(BookingStatus.CONFIRMED);
@@ -68,6 +80,44 @@ public class BookingService {
             throw new SeatAlreadyBookedException("One or more selected seats are already booked");
         }
     }
+    private BigDecimal priceFor(Show show, com.alok.bookmyshoww.enums.SeatType type) {
+        BigDecimal price = switch (type) {
+            case RECLINER -> show.getReclinerPrice();
+            case VIP -> show.getVipPrice();
+            case COUPLE -> show.getCouplePrice();
+            case PREMIUM -> show.getPremiumPrice();
+            case REGULAR -> show.getRegularPrice();
+        };
+        if (price != null) return price;
+        return switch (type) {
+            case RECLINER -> new BigDecimal("399");
+            case VIP -> new BigDecimal("299");
+            case COUPLE -> new BigDecimal("349");
+            case PREMIUM -> new BigDecimal("239");
+            case REGULAR -> new BigDecimal("199");
+        };
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isUserEmail(Long userId, String email) {
+        return userRepo.findById(userId)
+                .map(user -> user.getEmail().equalsIgnoreCase(email))
+                .orElse(false);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isBookingOwner(Long bookingId, String email) {
+        return bookingRepo.findById(bookingId)
+                .map(booking -> booking.getUser() != null
+                        && booking.getUser().getEmail().equalsIgnoreCase(email))
+                .orElse(false);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> getBookedSeatIds(Long showId) {
+        return bookingSeatRepo.findBookedSeatIds(showId, BookingStatus.CONFIRMED);
+    }
+
     @Transactional(readOnly = true)
     public Booking getById(Long id) {
         return bookingRepo.findById(id)

@@ -1,6 +1,8 @@
 package com.alok.bookmyshoww.model;
 
 import com.alok.bookmyshoww.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -31,6 +33,7 @@ public class User {
     private String email;
 
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 

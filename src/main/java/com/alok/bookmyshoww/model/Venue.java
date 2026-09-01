@@ -1,7 +1,5 @@
 package com.alok.bookmyshoww.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,11 +9,11 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class Venue {
+public class Venue
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +23,7 @@ public class Venue {
     private String city;
     private String address;
 
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "venue")
+    @JsonManagedReference("venue-screens")
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
     private List<Screen> screens;
-
 }

@@ -8,6 +8,7 @@ import com.alok.bookmyshoww.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
@@ -16,17 +17,27 @@ import java.util.List;
 public class BookingController {
     private final BookingService bookingService;
     @PostMapping
-    public ResponseEntity<Booking> create(@RequestBody BookingRequestDto request) throws UserNotFoundException, ShowNotFoundException, SeatAlreadyBookedException {
+    public ResponseEntity<Booking> create(@RequestBody BookingRequestDto request, Authentication authentication) throws UserNotFoundException, ShowNotFoundException, SeatAlreadyBookedException {
+        if (!bookingService.isUserEmail(request.getUserId(), authentication.getName())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.create(request));
     }
     @GetMapping("/{id}")
     public ResponseEntity<Booking> getById(@PathVariable Long id) {
         return ResponseEntity.ok(bookingService.getById(id));
     }
+    @GetMapping("/show/{showId}/booked-seats")
+    public ResponseEntity<List<Long>> getBookedSeatIds(@PathVariable Long showId) {
+        return ResponseEntity.ok(bookingService.getBookedSeatIds(showId));
+    }
+
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN') or @bookingService.isUserEmail(#userId, authentication.name)")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Booking>> getUserBookings(@PathVariable Long userId) throws UserNotFoundException {
         return ResponseEntity.ok(bookingService.getUserBookings(userId));
     }
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN') or @bookingService.isBookingOwner(#id, authentication.name)")
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<Booking> cancel(@PathVariable Long id) {
         return ResponseEntity.ok(bookingService.cancel(id));

@@ -8,7 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BookingSeatRepo extends JpaRepository<BookingSeat,Long> {
+public interface BookingSeatRepo extends JpaRepository<BookingSeat, Long> {
+
     @Query("""
         SELECT bs
         FROM BookingSeat bs
@@ -19,6 +20,12 @@ public interface BookingSeatRepo extends JpaRepository<BookingSeat,Long> {
     List<BookingSeat> findBookedSeats(
             @Param("showId") Long showId,
             @Param("seatIds") List<Long> seatIds,
+            @Param("status") BookingStatus status
+    );
+
+    @Query("SELECT bs.seat.id FROM BookingSeat bs WHERE bs.show.id = :showId AND bs.booking.bookingStatus = :status")
+    List<Long> findBookedSeatIds(
+            @Param("showId") Long showId,
             @Param("status") BookingStatus status
     );
 }

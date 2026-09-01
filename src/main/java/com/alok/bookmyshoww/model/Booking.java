@@ -24,7 +24,7 @@ public class Booking {
     private BigDecimal totalAmount;
 
     @ManyToOne
-    @JoinColumn(name = "show_id",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "show_id", referencedColumnName = "id", nullable = false)
     private Show show;
 
     @Enumerated(EnumType.STRING)
@@ -33,6 +33,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "booking")
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookingSeat> bookingList;
 }

@@ -5,9 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface SeatRepo extends JpaRepository<Seat,Long> {
-    List<Seat> findByScreenIdAndSeatNumberIn(
-            Long screenId,
-            List<String> seatNumbers
-    );
+public interface SeatRepo extends JpaRepository<Seat, Long> {
+    List<Seat> findByScreenId(Long screenId);
+    List<Seat> findByScreenIdAndSeatNumberIn(Long screenId, List<String> seatNumbers);
 }

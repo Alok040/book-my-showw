@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class SeatService {
@@ -19,6 +21,11 @@ public class SeatService {
     {
         seatRepo.save(seat);
         return seat;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Seat> getByScreenId(Long screenId) {
+        return seatRepo.findByScreenId(screenId);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
@@ -34,7 +41,7 @@ public class SeatService {
         s1.setSeatType(seat.getSeatType());
         s1.setScreen(seat.getScreen());
         seatRepo.save(s1);
-        return s1;
+        return seat;
     }
 
     @Transactional
