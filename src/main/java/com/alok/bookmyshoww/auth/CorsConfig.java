@@ -16,7 +16,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(
-                List.of("https://book-my-showw-black.vercel.app")
+                List.of("https://book-my-showw-black.vercel.app","https://book-my-showw-82ww9gvmv-bin-9381.vercel.app")
         );
 
         config.setAllowedMethods(
